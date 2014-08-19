@@ -42,7 +42,7 @@
         }
       }
 
-      local.loadBanksOnSelector(function(that) {
+      showUpBanks = function(that) {
         that.selector.focusin(function(){
           if($(that.bankDivSelector).length <= 0) {
             var div = that.buildBankDiv();
@@ -63,7 +63,25 @@
             $(that.bankDivSelector).hide();
           }
         });
+      };
 
+      enableFilterOnBanks = function(that) {
+        that.selector.keyup(function(){
+          var value = that.selector.val();
+          var regexPattern = new RegExp(value, 'i');
+          $.each($('ul li', that.bankDivSelector), function(i, item){
+            if(regexPattern.test($(item).text())){
+              $(item).css({'display':'block'})
+            } else {
+              $(item).css({'display':'none'})
+            }
+          });
+        });
+      };
+
+      local.loadBanksOnSelector(function(that) {
+        showUpBanks(that);
+        enableFilterOnBanks(that);
       });
     }
   });
