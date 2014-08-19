@@ -54,8 +54,16 @@
 
           $('ul li', that.bankDivSelector).click(function(element){
             root.val($(element.currentTarget).text());
+            $(that.bankDivSelector).hide();
           })
         });
+
+        $(document).mouseup(function(e){
+          if(!$(that.bankDivSelector).is(e.target) && !that.selector.is(e.target)) {
+            $(that.bankDivSelector).hide();
+          }
+        });
+
       });
     }
   });
