@@ -2,16 +2,35 @@
   $.fn.extend({
     brbanks: function(options) {
 
-      localMethods = {
+      local = {
         selector: this,
-        loadBanks: function() {
+        banks: [],
+
+        parseToList: function(banks_data) {
+          that = this;
+          $.each(banks_data, function(i,item){
+            that.banks.push(item.id + ' - ' + item.name)
+          });
+
+          that.inserListOnData();
+        },
+
+        inserListOnData: function() {
+          this.selector.data('banks', this.banks);
+        },
+
+        loadBanksOnSelector: function(callback) {
+          var that = this;
           $.getJSON("http://brbanks.herokuapp.com", function(data){
-          })
+            that.parseToList(data);
+            callback(that);
+          });
         }
       }
 
-      localMethods.loadBanks();
-
+      local.loadBanksOnSelector(function(that) {
+        console.log(that.selector.data('banks'));
+      });
     }
   });
 })(jQuery);
